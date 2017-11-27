@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+#fader{
+	width:240px;
+	height:165px;
+	border:0px solid #eee;
+	position:relative;
+	overflow:hidden;
+}
+#fader li{
+	position:absolute;
+	left:0;
+	top:0;
+}
+ul,li{
+	list-style:none;
+	margin:0;padding:0
+}
+.imgxw{
+	display:block;
+	width:240px;
+	height:165px;
+}
+.fader-nav{
+	display:inline-block;
+	list-style:none;
+	color: #000000;
+	text-align: center;
+	vertical-align:middle;
+	line-height: 20px;
+	width: 15px;
+	height: 20px;
+	font-family: Arial;
+	font-size: 12px;
+	margin: 0px;
+	filter:alpha(Opacity=85);-moz-opacity:0.85;opacity: 0.85;
+	background-image:url('images/images_v4/news_lboff.png');
+	cursor:pointer;
+}
+.fader-cur-nav{
+	display:inline-block;
+	list-style:none;
+	text-align: center;
+	vertical-align:middle;
+	line-height: 20px;
+	width: 15px;
+	height: 20px;
+	color:#000000;
+	font-family: Arial;
+	font-size: 12px;
+	filter:alpha(Opacity=85);-moz-opacity:0.85;opacity: 0.85;
+	background-image:url('images/images_v4/news_lbon.png');
+	cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+    <div id="fader" style="float:left; margin-top:50px;">
+	<ul>
+     <!--通过层级和透明度来实现，渐进渐出的轮播效果，换上图片可以行-->
+	<li style="opacity: 1; z-index: 508;"><a href="show.asp?NewsId=13823" target="_blank"><img class="imgxw" src="uploadfile/jpg/2017-11/2017112382356260.jpg" title="院纪委委员深入医学工程处 开展廉政风险防控和行风建设专项督查" border="0"></a></li>
+
+	<li style="opacity: 1; z-index: 509;"><a href="show.asp?NewsId=13822" target="_blank"><img class="imgxw" src="uploadfile/jpg/2017-11/2017112115210228.jpg" title="我院党委完成对第九批京郊行人才的考察工作" border="0"></a></li>
+
+	<li style="opacity: 1; z-index: 510;"><a href="show.asp?NewsId=13817" target="_blank"><img class="imgxw" src="uploadfile/jpg/2017-11/20171121111010198.jpg" title="北京世纪坛医院召开2017年医联体第四季度例会" border="0"></a></li>
+
+	<li style="opacity: 1; z-index: 505;"><a href="show.asp?NewsId=13815" target="_blank"><img class="imgxw" src="uploadfile/jpg/2017-11/20171120165236445.jpg" title="院工会组织开展“不忘初心 牢记使命”拓展活动" border="0"></a></li>
+
+	<li style="opacity: 1; z-index: 506;"><a href="show.asp?NewsId=13813" target="_blank"><img class="imgxw" src="uploadfile/jpg/2017-11/2017112016747304.jpg" title="第二期2017年循环支持技术高级研修班顺利召开" border="0"></a></li>
+
+	<li style="opacity: 1; z-index: 507;"><a href="show.asp?NewsId=13812" target="_blank"><img class="imgxw" src="uploadfile/jpg/2017-11/2017112014553904.jpg" title="我院谢铮铮、何福亮获得 医管局医学科技创新英文演讲比赛二等奖" border="0"></a></li>
+
+	</ul>
+<p style="line-height: 20px; height: 20px; z-index: 511;"></p><div id="fader-nav" style="position: absolute; left: 0px; bottom: 0px; z-index: 512;"><a class="fader-nav">1</a><a class="fader-nav">2</a><a class="fader-cur-nav">3</a><a class="fader-nav">4</a><a class="fader-nav">5</a><a class="fader-nav">6</a></div></div>
+<script type="text/javascript">
+var fader = new Hongru.fader.init('fader',{
+	id:'fader'
+});
+</script>
+</body>
+</html>
+<script type="text/javascript">
+var Hongru={};
+function H$(id){return document.getElementById(id)}
+function H$$(c,p){return p.getElementsByTagName(c)}
+Hongru.fader = function(){
+	function init(anchor,options){
+		this.anchor = anchor;
+		var wp = H$(options.id),
+			ul = H$$('ul',wp)[0],
+			li = this.li = H$$('li',ul);
+		this.index = options.position?options.position:0;
+		this.a = options.auto?options.auto:2;
+		this.cur = this.z = 0;
+		this.l = li.length;
+		this.img = [];
+		for(var k=0;k<this.l;k++){
+			this.img.push(H$$('img',this.li[k])[0]);
+		}
+		this.curC = options.curNavClass?options.curNavClass:'fader-cur-nav';
+		nav_wp = document.createElement('div');
+		nav_wp.id = 'fader-nav';
+		nav_wp.style.cssText = 'position:absolute;left:0px;bottom:0px';
+		var alt = this.alt = document.createElement('p');
+		for(var i=0;i<this.l;i++){
+			this.li[i].o = 100;
+			//setOpacity(this.li[i],this.li.o);
+			this.li[i].style.opacity = this.li[i].o/100;
+			this.li[i].style.filter = 'alpha(opacity='+this.li[i].o+')';
+			//绘制控制器
+			var nav = document.createElement('a');
+			nav.className = options.navClass?options.navClass:'fader-nav';
+			nav.innerHTML = i+1;
+			nav.onmouseover = new Function(this.anchor+'.pos('+i+')');
+			nav_wp.appendChild(nav);
+		}
+		wp.appendChild(alt);
+		wp.appendChild(nav_wp);
+		this.textH = nav_wp.offsetHeight;
+				//2010.11.26屏蔽alt.style.cssText-显示底部的图片标题
+				//alt.style.cssText = 'color:#fff;font-size:12px;padding-left:20px;margin:0;position:absolute;left:0;bottom:0;overflow:hidden;width:100%;background:#000;opacity:0.7;filter:alpha(opacity=70);';
+				alt.style.height = alt.style.lineHeight = this.textH+'px';
+		this.pos(this.index);
+	}
+	init.prototype={
+		auto:function(){
+			this.li.a = setInterval(new Function(this.anchor+'.move(1)'),this.a*1000); 
+		},
+		move:function(i){
+			var n = this.cur+i;
+			var m = i==1?n==this.l?0:n:n<0?this.l-1:n;
+			this.pos(m);
+		},
+		pos:function(i){
+			clearInterval(this.li.a);
+			clearInterval(this.li[i].f);
+			var curLi = this.li[i];
+			this.z++;
+			curLi.style.zIndex = this.z;
+			this.alt.style.zIndex = this.z+1;
+			nav_wp.style.zIndex = this.z+2;
+			this.li.a=false; //这句话是必要的
+			this.cur = i;
+			//setOpacity(curLi[i],0);
+			if(this.li[i].o>=100){
+				this.li[i].o = 0;
+				curLi.style.opacity = 0;
+				curLi.style.filter = 'alpha(opacity=0)';
+				this.alt.style.height = '0px';
+			}
+			for(var x=0;x<this.l;x++){
+				nav_wp.getElementsByTagName('a')[x].className = x==i?this.curC:'fader-nav';
+				}
+			this.alt.innerHTML = this.img[i].alt;
+			this.li[i].f = setInterval(new Function(this.anchor+'.fade('+i+')'),20);
+		},
+		fade:function(i){
+		var p=this.li[i];
+			if(p.o>=100){
+				clearInterval(p.f);
+				if(!this.li.a){ //一定要在这里做个是否已经clearInterval的判断，要不然在快速点击的时候会导致图片不停地闪
+					this.auto();
+				}
+			}
+			else{
+				p.o+=5;
+				//setOpacity(this.li[i],this.li[i].o);
+				p.style.opacity = p.o/100;
+				p.style.filter = 'alpha(opacity='+p.o+')';
+				this.alt.style.height = Math.ceil(p.o*this.textH/100)+'px';
+			}
+		}
+	};
+	return {init:init};
+}();
+</script>
